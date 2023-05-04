@@ -1,14 +1,24 @@
 <template>
 	<div id="app">
 		<div class="wrapper clearfix">
-			<players v-bind:scorePlayers="scorePlayers" 
-			v-bind:activePlayer="activePlayer"
-			v-bind:curentScore="curentScore"/>
+			<players 
+				v-bind:scorePlayers="scorePlayers" 
+				v-bind:activePlayer="activePlayer"
+				v-bind:curentScore="curentScore"
+			/>
 
-			<controls />
+			<controls 
+				v-on:handleNewGame="handleNewGame"
+			/>
 
-			<dices />
+			<dices 
+				v-bind:dices="dices"
+			/>
 
+			<popup-rule
+				v-bind:isOpenPopup="isOpenPopup"
+				v-on:handleConfirm="handleConfirm"
+			/>
 		</div>
 	</div>
 </template>
@@ -17,23 +27,37 @@
 import Players from './components/Players.vue';
 import Controls from './components/Controls.vue';
 import Dices from './components/Dices.vue';
+import PopupRule from './components/PopupRule.vue';
 export default {
 	name: 'app',
 	data() {
 		return {
 			isPlaying: false,
+			isOpenPopup: false,
 			activePlayer:0,
 			scorePlayers: [18,26],
-			curentScore: 10
+			curentScore: 10,
+			dices: [1,6]
 		}
 	},
 	methods: {
-
+		handleNewGame(){
+			this.isOpenPopup = true;
+		},
+		handleConfirm(){
+			this.isPlaying = true;
+			this.isOpenPopup = false;
+			this.activePlayer = 0;
+			this.curentScore = 0;
+			this.scorePlayers = [0,0];
+			this.dices = [1,1];
+		}
 	},
 	components: {
 		Players,
 		Controls,
-		Dices
+		Dices,
+		PopupRule
 	}
 }
 </script>
