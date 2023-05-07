@@ -1,7 +1,7 @@
 <template>
     <div class="wrapper-controls">
         <button class="control btn-new" @click="newGame "><i class="ion-ios-plus-outline"></i>New game</button>
-            <button class="control btn-roll"><i class="ion-ios-loop"></i>Roll dice</button>
+            <button @click="rollDice" class="control btn-roll"><i class="ion-ios-loop"></i>Roll dice</button>
             <button class="control btn-hold"><i class="ion-ios-download-outline"></i>Hold</button>
             
             <input type="number" placeholder="Final score" class="final-score">
@@ -20,6 +20,10 @@ export default {
         newGame(){
             console.log('newGame controls vue')
             this.$emit('handleNewGame')
+        },
+        rollDice(){
+            console.log('rollDice controls vue')
+            this.$emit('handleRollDice')
         }
     }
 }

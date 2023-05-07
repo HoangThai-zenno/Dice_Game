@@ -9,6 +9,7 @@
 
 			<controls 
 				v-on:handleNewGame="handleNewGame"
+				v-on:handleRollDice="handleRollDice"
 			/>
 
 			<dices 
@@ -43,6 +44,19 @@ export default {
 	methods: {
 		handleNewGame(){
 			this.isOpenPopup = true;
+		},
+		handleRollDice(){
+			if(this.isPlaying)
+			{
+				var dice1 = Math.floor(Math.random() * 6) + 1;
+				var dice2 = Math.floor(Math.random() * 6) + 1;
+				console.log(dice1, dice2)
+				this.dices = [dice1, dice2];
+			}
+			else 
+			{
+				alert("Please click new game");
+			}
 		},
 		handleConfirm(){
 			this.isPlaying = true;
