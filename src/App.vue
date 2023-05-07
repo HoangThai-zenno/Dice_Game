@@ -4,7 +4,8 @@
 			<players v-bind:scorePlayers="scorePlayers" v-bind:activePlayer="activePlayer"
 				v-bind:curentScore="curentScore" />
 
-			<controls v-on:handleNewGame="handleNewGame" v-on:handleRollDice="handleRollDice" />
+			<controls v-on:handleNewGame="handleNewGame" v-on:handleRollDice="handleRollDice"
+				v-on:handleHoldScore="handleHoldScore" />
 
 			<dices v-bind:dices="dices" />
 
@@ -31,9 +32,24 @@ export default {
 		}
 	},
 	methods: {
+
 		nextPlayer() {
 			this.activePlayer = this.activePlayer === 0 ? 1 : 0;
 			this.curentScore = 0;
+		},
+		handleHoldScore() {
+			if(this.isPlaying){
+
+				let { curentScore, scorePlayers, activePlayer } = this;
+				let oldScore = scorePlayers[activePlayer];
+				this.$set(this.scorePlayers, activePlayer, oldScore + curentScore);
+				this.nextPlayer();
+			}
+			else{
+				alert("Please click new game");
+			}
+
+
 		},
 		handleNewGame() {
 			this.isOpenPopup = true;
