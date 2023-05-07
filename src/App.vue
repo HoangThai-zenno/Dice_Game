@@ -1,25 +1,14 @@
 <template>
 	<div id="app">
 		<div class="wrapper clearfix">
-			<players 
-				v-bind:scorePlayers="scorePlayers" 
-				v-bind:activePlayer="activePlayer"
-				v-bind:curentScore="curentScore"
-			/>
+			<players v-bind:scorePlayers="scorePlayers" v-bind:activePlayer="activePlayer"
+				v-bind:curentScore="curentScore" />
 
-			<controls 
-				v-on:handleNewGame="handleNewGame"
-				v-on:handleRollDice="handleRollDice"
-			/>
+			<controls v-on:handleNewGame="handleNewGame" v-on:handleRollDice="handleRollDice" />
 
-			<dices 
-				v-bind:dices="dices"
-			/>
+			<dices v-bind:dices="dices" />
 
-			<popup-rule
-				v-bind:isOpenPopup="isOpenPopup"
-				v-on:handleConfirm="handleConfirm"
-			/>
+			<popup-rule v-bind:isOpenPopup="isOpenPopup" v-on:handleConfirm="handleConfirm" />
 		</div>
 	</div>
 </template>
@@ -35,36 +24,48 @@ export default {
 		return {
 			isPlaying: false,
 			isOpenPopup: false,
-			activePlayer:0,
-			scorePlayers: [18,26],
+			activePlayer: 0,
+			scorePlayers: [18, 26],
 			curentScore: 10,
-			dices: [1,6]
+			dices: [1, 6]
 		}
 	},
 	methods: {
-		handleNewGame(){
+		nextPlayer() {
+			this.activePlayer = this.activePlayer === 0 ? 1 : 0;
+			this.curentScore = 0;
+		},
+		handleNewGame() {
 			this.isOpenPopup = true;
 		},
-		handleRollDice(){
-			if(this.isPlaying)
-			{
+		handleRollDice() {
+			if (this.isPlaying) {
 				var dice1 = Math.floor(Math.random() * 6) + 1;
 				var dice2 = Math.floor(Math.random() * 6) + 1;
 				console.log(dice1, dice2)
 				this.dices = [dice1, dice2];
+				if (dice1 === 1 || dice2 === 1) {
+					let player = this.activePlayer + 1
+					setTimeout(function () {
+						alert(`Player ${player} đã quay trúng xúc sắc số 1. Rất tiếc!`)
+					}, 10);
+					this.nextPlayer();
+				}
+				else {
+					this.curentScore = this.curentScore + dice1 + dice2;
+				}
 			}
-			else 
-			{
+			else {
 				alert("Please click new game");
 			}
 		},
-		handleConfirm(){
+		handleConfirm() {
 			this.isPlaying = true;
 			this.isOpenPopup = false;
 			this.activePlayer = 0;
 			this.curentScore = 0;
-			this.scorePlayers = [0,0];
-			this.dices = [1,1];
+			this.scorePlayers = [0, 0];
+			this.dices = [1, 1];
 		}
 	},
 	components: {
