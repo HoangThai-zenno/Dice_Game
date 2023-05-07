@@ -1,11 +1,12 @@
 <template>
 	<div id="app">
 		<div class="wrapper clearfix">
-			<players v-bind:scorePlayers="scorePlayers" v-bind:activePlayer="activePlayer"
-				v-bind:curentScore="curentScore" />
+			<players v-bind:scorePlayers="scorePlayers" v-bind:activePlayer="activePlayer" v-bind:curentScore="curentScore"
+				v-bind:isWinner="isWinner" />
 
-			<controls v-on:handleNewGame="handleNewGame" v-on:handleRollDice="handleRollDice"
-				v-on:handleHoldScore="handleHoldScore" />
+			<controls v-on:handleNewGame="handleNewGame" v-on:handleRollDice="handleRollDice" v-bind:isPlaying="isPlaying"
+				v-on:handleHoldScore="handleHoldScore" v-bind:finalScore="finalScore"
+				v-on:handleChangeFinalScore="handleChangeFinalScore" />
 
 			<dices v-bind:dices="dices" />
 
@@ -26,30 +27,43 @@ export default {
 			isPlaying: false,
 			isOpenPopup: false,
 			activePlayer: 0,
-			scorePlayers: [18, 26],
-			curentScore: 10,
-			dices: [1, 6]
+			scorePlayers: [0, 0],
+			curentScore: 0,
+			dices: [1, 6],
+			finalScore: 100
+		}
+	},
+	computed: {
+		isWinner() {
+			let { scorePlayers, finalScore } = this;
+			if (scorePlayers[0] >= finalScore || scorePlayers[1] >= finalScore) {
+				this.isPlaying = false;
+				return true;
+			}
+			return false;
 		}
 	},
 	methods: {
-
 		nextPlayer() {
 			this.activePlayer = this.activePlayer === 0 ? 1 : 0;
 			this.curentScore = 0;
 		},
+		handleChangeFinalScore(e) {
+			this.finalScore = parseInt(e.target.value);
+		},
 		handleHoldScore() {
-			if(this.isPlaying){
+			if (this.isPlaying) {
 
 				let { curentScore, scorePlayers, activePlayer } = this;
 				let oldScore = scorePlayers[activePlayer];
 				this.$set(this.scorePlayers, activePlayer, oldScore + curentScore);
-				this.nextPlayer();
+				if (!this.isWinner) {
+					this.nextPlayer();
+				}
 			}
-			else{
+			else {
 				alert("Please click new game");
 			}
-
-
 		},
 		handleNewGame() {
 			this.isOpenPopup = true;

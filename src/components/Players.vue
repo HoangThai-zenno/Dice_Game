@@ -1,16 +1,18 @@
 <template>
     <div class="wrapper-player">
-        <div class="player-panel" v-bind:class="{active: activePlayer == 0}">
-            <div class="player-name">Player 1</div>
+        <div class="player-panel"
+            v-bind:class="{ active: activePlayer == 0 && !isWinner, winner: activePlayer == 0 && isWinner }">
+            <div class="player-name">{{ getNamePlayer(0) }}</div>
             <div class="player-score">{{ scorePlayers[0] }}</div>
             <div class="player-current-box">
                 <div class="player-current-label">Current</div>
-                <div class="player-current-score">{{ activePlayer == 0 ? curentScore : 0}}</div>
+                <div class="player-current-score">{{ activePlayer == 0 ? curentScore : 0 }}</div>
             </div>
         </div>
 
-        <div class="player-panel" v-bind:class="{active: activePlayer == 1}">
-            <div class="player-name">Player 2</div>
+        <div class="player-panel"
+            v-bind:class="{ active: activePlayer == 1 && !isWinner, winner: activePlayer == 1 && isWinner }">
+            <div class="player-name">{{ getNamePlayer(1) }}</div>
             <div class="player-score">{{ scorePlayers[1] }}</div>
             <div class="player-current-box">
                 <div class="player-current-label">Current</div>
@@ -28,19 +30,29 @@ export default {
             type: Array,
             default: [0, 0]
         },
-        activePlayer:{
+        activePlayer: {
             type: Number,
             default: 0
         },
-        curentScore:{
+        curentScore: {
             type: Number,
             default: 0
-        }
+        },
+        isWinner: { type: Boolean, default: false }
 
     },
     data() {
         return {
 
+        }
+    },
+    methods: {
+        getNamePlayer(index) {
+            var defaultName = 'Player ' + (index + 1);
+            if (this.activePlayer == index && this.isWinner) {
+                defaultName = 'Winner!';
+            }
+            return defaultName
         }
     }
 }
@@ -123,4 +135,5 @@ export default {
 .winner .player-name {
     font-weight: 300;
     color: #42b983;
-}</style>
+}
+</style>

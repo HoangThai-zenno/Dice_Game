@@ -1,31 +1,36 @@
 <template>
     <div class="wrapper-controls">
-        <button class="control btn-new" @click="newGame "><i class="ion-ios-plus-outline"></i>New game</button>
-            <button @click="rollDice" class="control btn-roll"><i class="ion-ios-loop"></i>Roll dice</button>
-            <button @click="holdScore" class="control btn-hold"><i class="ion-ios-download-outline"></i>Hold</button>
-            
-            <input type="number" placeholder="Final score" class="final-score">
+        <button class="control btn-new" @click="newGame"><i class="ion-ios-plus-outline"></i>New game</button>
+        <button @click="rollDice" class="control btn-roll"><i class="ion-ios-loop"></i>Roll dice</button>
+        <button @click="holdScore" class="control btn-hold"><i class="ion-ios-download-outline"></i>Hold</button>
+
+        <input v-bind:disabled="isPlaying" v-bind:value="finalScore" v-on:input="$emit('handleChangeFinalScore', $event)"
+            type="number" placeholder="Final score" class="final-score">
     </div>
 </template>
 
 <script>
 export default {
     name: 'controls',
-    data(){
-        return{
-            
+    props: {
+        finalScore: { type: Number, default: 100 },
+        isPlaying: { type: Boolean, default: false }
+    },
+    data() {
+        return {
+            valueDemo: 100,
         }
     },
-    methods:{
-        newGame(){
+    methods: {
+        newGame() {
             console.log('newGame controls vue')
             this.$emit('handleNewGame')
         },
-        rollDice(){
+        rollDice() {
             console.log('rollDice controls vue')
             this.$emit('handleRollDice')
         },
-        holdScore(){
+        holdScore() {
             this.$emit('handleHoldScore')
         }
     }
@@ -51,12 +56,18 @@ export default {
     font-weight: 300;
     transition: background-color 0.3s, color 0.3s;
 }
+
 .control.disable {
     pointer-events: none;
 }
 
-.control:hover { font-weight: 600; }
-.control:hover i { margin-right: 20px; }
+.control:hover {
+    font-weight: 600;
+}
+
+.control:hover i {
+    margin-right: 20px;
+}
 
 .control:focus {
     outline: none;
@@ -73,9 +84,17 @@ export default {
     transition: margin 0.3s;
 }
 
-.btn-new { top: 45px;}
-.btn-roll { top: 403px;}
-.btn-hold { top: 467px;}
+.btn-new {
+    top: 45px;
+}
+
+.btn-roll {
+    top: 403px;
+}
+
+.btn-hold {
+    top: 467px;
+}
 
 .final-score {
     position: absolute;
@@ -91,5 +110,7 @@ export default {
     text-transform: uppercase;
 }
 
-.final-score:focus { outline: none; }
+.final-score:focus {
+    outline: none;
+}
 </style>
