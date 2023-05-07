@@ -50,6 +50,11 @@ export default {
 		},
 		handleChangeFinalScore(e) {
 			this.finalScore = parseInt(e.target.value);
+			if(isNaN(number)) {
+                this.finalScore = '';
+            } else {
+                this.finalScore = number;
+            }
 		},
 		handleHoldScore() {
 			if (this.isPlaying) {

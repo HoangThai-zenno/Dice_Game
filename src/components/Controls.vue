@@ -13,7 +13,7 @@
 export default {
     name: 'controls',
     props: {
-        finalScore: { type: Number, default: 100 },
+        finalScore: { type: [Number, String], default: 100 },
         isPlaying: { type: Boolean, default: false }
     },
     data() {
